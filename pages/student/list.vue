@@ -51,14 +51,24 @@
                         <el-table-column prop="created_at" label="Created at" sortable>
                         </el-table-column>
 
-                        <el-table-column label="Actions" fixed="right" width="240">
+                        <el-table-column label="" fixed="right" width="240">
                             <template slot-scope="scope">
-                                <nuxt-link :to="'/student/' + scope.row.id + '/edit'">
-                                    <el-button size="small" type="primary">Edit</el-button>
-                                </nuxt-link>
-                                <el-button size="small" type="danger"
-                                           @click="delete_student(scope.row)">Delete
-                                </el-button>
+                                <el-dropdown>
+                                    <span class="el-dropdown-link">
+                                             Actions <i class="el-icon-arrow-down el-icon--right"></i>
+                                     </span>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <nuxt-link :to="'/student/' + scope.row.id + '/edit'">
+                                            <el-dropdown-item icon="el-icon-edit">Edit</el-dropdown-item>
+                                        </nuxt-link>
+                                        <nuxt-link :to="'/student/' + scope.row.id + '/questionnaire'">
+                                            <el-dropdown-item icon="el-icon-document">Questionnaire</el-dropdown-item>
+                                        </nuxt-link>
+                                        <el-dropdown-item icon="el-icon-delete" @click="delete_student(scope.row)">
+                                            Delete
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
                             </template>
                         </el-table-column>
                     </el-table>

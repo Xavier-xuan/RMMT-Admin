@@ -22,7 +22,7 @@
                                                  v-for="index in team_max_student_count" :key="index">
                                     <template slot-scope="scope">
                                         <nuxt-link class="student-list" v-if="scope.row.students[index -1]"
-                                                   :to="'/student/' + scope.row.students[index -1].id + '/edit'">
+                                                   :to="'/student/' + scope.row.students[index -1].id + '/questionnaire'">
                                             {{ scope.row.students[index - 1].name }}
                                         </nuxt-link>
                                     </template>

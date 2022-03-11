@@ -91,7 +91,6 @@ export default {
             }
         })
 
-        console.info(_.assign(student, team_options))
         return _.assign(student, team_options)
     },
     methods: {
@@ -117,7 +116,8 @@ export default {
     padding: 50px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
-.save-btn{
+
+.save-btn {
     margin-top: 20px;
 }
 
