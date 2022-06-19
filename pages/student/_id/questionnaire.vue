@@ -32,7 +32,7 @@
                                 <template slot-scope="scope">
 
                                     <el-input-number
-                                        v-model.number="scope.row.weight" v-if="scope.row.weight >= 1" :min="-1">
+                                        v-model.number="scope.row.weight" v-if="scope.row.weight >= 0" :min="-1">
                                     </el-input-number>
                                 </template>
                             </el-table-column>

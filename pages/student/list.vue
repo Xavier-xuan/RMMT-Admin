@@ -59,10 +59,14 @@
                                      </span>
                                     <el-dropdown-menu slot="dropdown">
                                         <nuxt-link :to="'/student/' + scope.row.id + '/edit'">
-                                            <el-dropdown-item icon="el-icon-edit">Edit</el-dropdown-item>
+                                            <el-dropdown-item icon="el-icon-edit">
+                                                Edit
+                                            </el-dropdown-item>
                                         </nuxt-link>
                                         <nuxt-link :to="'/student/' + scope.row.id + '/questionnaire'">
-                                            <el-dropdown-item icon="el-icon-document">Questionnaire</el-dropdown-item>
+                                            <el-dropdown-item icon="el-icon-document">
+                                                Questionnaire
+                                            </el-dropdown-item>
                                         </nuxt-link>
                                         <el-dropdown-item icon="el-icon-delete" @click="delete_student(scope.row)">
                                             Delete

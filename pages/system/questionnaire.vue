@@ -153,7 +153,6 @@ export default {
 
                 // 仅支持必填选项
                 if (!element.options.required) {
-                    console.info(element)
                     this.$set(element, 'weight', -2) // 系统禁止设置权重的项目 设置为-2
                     return
                 }
@@ -183,9 +182,10 @@ export default {
                             return
                         }
 
-                        if (element.validation === "validation") {
-                            data_type = "number"
-                        } else {
+                            // if (element.validation === "number") {
+                            //     data_type = "number"
+                            // }
+                        else {
                             switch (element.type) {
                                 case "radio":
                                 case "checkbox":
@@ -195,14 +195,20 @@ export default {
                                         data_type = "text"
                                     break
                                 case "time":
-                                case "time-range":
                                     data_type = "time"
                                     break
+                                case "time-range":
+                                    data_type = "time_array"
+                                    break
                                 case "date":
-                                case "date-range":
                                     data_type = "date"
                                     break
+                                case "date-range":
+                                    data_type = "date_array"
+                                    break
                                 case "slider":
+                                    data_type = "number_array"
+                                    break
                                 case "rate":
                                 case "number":
                                     data_type = "number"

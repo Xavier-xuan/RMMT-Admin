@@ -21,10 +21,26 @@
                                 <el-table-column :label="'Student ' + index" prop="students"
                                                  v-for="index in team_max_student_count" :key="index">
                                     <template slot-scope="scope">
-                                        <nuxt-link class="student-list" v-if="scope.row.students[index -1]"
-                                                   :to="'/student/' + scope.row.students[index -1].id + '/questionnaire'">
-                                            {{ scope.row.students[index - 1].name }}
-                                        </nuxt-link>
+                                        <el-dropdown v-if="scope.row.students[index -1]" trigger="click">
+                                            <span class="el-dropdown-link student-list">
+                                                {{ scope.row.students[index - 1].name }}
+                                            </span>
+                                            <el-dropdown-menu slot="dropdown">
+                                                <nuxt-link
+                                                    :to="'/student/' + scope.row.students[index -1].id + '/edit'">
+                                                    <el-dropdown-item icon="el-icon-edit">
+
+                                                        Edit
+                                                    </el-dropdown-item>
+                                                </nuxt-link>
+                                                <nuxt-link
+                                                    :to="'/student/' + scope.row.students[index -1].id + '/questionnaire'">
+                                                    <el-dropdown-item icon="el-icon-document">
+                                                        Questionnaire
+                                                    </el-dropdown-item>
+                                                </nuxt-link>
+                                            </el-dropdown-menu>
+                                        </el-dropdown>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="Action" fixed="right" width="240">

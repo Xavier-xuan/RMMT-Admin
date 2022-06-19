@@ -7,7 +7,7 @@ export default {
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: 'RDP-admin',
+        title: 'RMDP-admin',
         htmlAttrs: {
             lang: 'zh-cn'
         },
@@ -54,9 +54,15 @@ export default {
     auth: {
         strategies: {
             local: {
+                scheme: 'refresh',
                 token: {
-                    property: "data.token",
+                    property: "data.access_token",
                     global: true
+                },
+                refreshToken: {
+                    property: 'data.refresh_token',
+                    data: 'refresh_token',
+                    maxAge: 60 * 60 * 24 * 30
                 },
                 user: {
                     property: 'data.user'
@@ -67,6 +73,10 @@ export default {
                     user: {url: '/userinfo', method: 'get'}
                 }
             }
+        },
+        redirect: {
+            home: '/dashboard',
+            logout: '/logout'
         }
     },
     // Build Configuration: https://go.nuxtjs.dev/config-build
