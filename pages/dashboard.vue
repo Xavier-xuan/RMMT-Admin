@@ -153,7 +153,6 @@ export default {
                 team_max_student_count: kv_system_settings.team_max_student_count
             }
         });
-        console.info(settings);
 
         let isDuringTime = function (beginDateStr, endDateStr
     )

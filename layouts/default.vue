@@ -136,6 +136,11 @@ export default {
     },
     created() {
         this.navUrl = this.$route.path
+
+        // 五分钟发送一次心跳包 刷新token
+        setInterval(async () => {
+            await this.$auth.fetchUser()
+        }, 5*60*1000)
     }
 }
 </script>

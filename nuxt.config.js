@@ -54,15 +54,10 @@ export default {
     auth: {
         strategies: {
             local: {
-                scheme: 'refresh',
+                scheme: 'local',
                 token: {
                     property: "data.access_token",
-                    global: true
-                },
-                refreshToken: {
-                    property: 'data.refresh_token',
-                    data: 'refresh_token',
-                    maxAge: 60 * 60 * 24 * 30
+                    global: true,
                 },
                 user: {
                     property: 'data.user'
@@ -76,7 +71,7 @@ export default {
         },
         redirect: {
             home: '/dashboard',
-            logout: '/logout'
+            logout: '/'
         }
     },
     // Build Configuration: https://go.nuxtjs.dev/config-build

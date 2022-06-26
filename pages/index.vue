@@ -4,8 +4,8 @@
 <script>
 export default {
   name: 'IndexPage',
-    beforeMount() {
-      // this.$router.replace('/dashboard')
-    }
+    beforeRouteEnter(to, from, next) {
+      next("/dashboard")
+  }
 }
 </script>

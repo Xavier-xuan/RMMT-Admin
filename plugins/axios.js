@@ -19,4 +19,14 @@ export default function ({$axios, redirect, app}) {
             message: "Oops.. There is something wrong with our remote server, so your action doesn't get a response. Please retry."
         })
     })
+
+    $axios.onRequest(config => {
+        if (config.method === "post" || config.method === "POST") {
+            if (config.url === "/refresh") {
+                let data = JSON.parse(config.data)
+                config.headers['Authorization'] = "Bearer " + data.refresh_token
+            }
+        }
+        return config
+    })
 }
