@@ -6,7 +6,7 @@
 
                 <el-row class="header" type="flex" align="middle">
                     <el-col class="site-name" :span="6">
-                        <a href="/">RMDP Admin</a>
+                        <a href="/">RMMP Admin</a>
                     </el-col>
 
                     <el-col class="menu" :offset="8" :span="10">

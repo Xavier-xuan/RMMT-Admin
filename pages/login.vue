@@ -2,7 +2,7 @@
     <div class="login-box">
         <div class="login-card">
             <div class="logo">
-                RDP Admin
+                Roommate Matcher Admin
             </div>
             <div class="login-form">
                 <el-form ref="login_form" :model="login_form" :rules="rules">

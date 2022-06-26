@@ -7,7 +7,7 @@ export default {
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: 'RMDP-admin',
+        title: 'RMMT-Admin',
         htmlAttrs: {
             lang: 'zh-cn'
         },
