@@ -174,7 +174,7 @@ export default {
         } else if (isDuringTime(settings.step_3_period[0], settings.step_3_period[1])) {
             data.currentStage = "自由组队";
         } else {
-            data.currentStage = "管理员确认";
+            data.currentStage = "组队结束";
         }
         return data;
     }
