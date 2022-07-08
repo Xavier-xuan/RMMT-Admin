@@ -20,7 +20,6 @@ export default {
 
 <style scoped>
 .zhixin-logo{
-  margin: 20px auto;
   text-align: center;
 }
 </style>
