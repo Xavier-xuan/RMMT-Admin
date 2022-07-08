@@ -1,7 +1,7 @@
 <template>
     <div class="auth-page">
         <div class="background">
-            <img src="https://s2.loli.net/2022/02/01/X5meEt3qr4bKPZB.jpg" style="object-fit: cover;" width="100%"
+            <img src="/login-background.jpg" style="object-fit: cover;" width="100%"
                  height="100%" alt=""/>
         </div>
         <div class="content">
