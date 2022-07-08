@@ -9,7 +9,7 @@
                                 {{ userCount }}
                             </div>
                             <div class="usercount-tip">
-                                Students in Total
+                                学生总数
                             </div>
                         </div>
                         <el-divider>
@@ -21,7 +21,7 @@
                                         {{ finishedQuestionnaire }}
                                     </div>
                                     <div class="overview-sub-tip">
-                                        Students Who Finished Questionnaire
+                                        已完成问卷的学生
                                     </div>
                                 </div>
                             </el-col>
@@ -32,7 +32,7 @@
                                     </div>
 
                                     <div class="overview-sub-tip">
-                                        Students Who Have Mated
+                                        已组队的学生
                                     </div>
                                 </div>
                             </el-col>
@@ -45,7 +45,7 @@
 
 
                                     <div class="overview-sub-tip">
-                                        Current Stage
+                                        当前阶段
                                     </div>
                                 </div>
                             </el-col>
@@ -62,7 +62,7 @@
                         {{ teamsCount }}
                     </div>
                     <div class="action-tip">
-                        Number of Teams
+                        队伍数量
                     </div>
                 </el-card>
 
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="action-tip">
-                        Number of Questionnaire Items
+                        问卷问题数量
                     </div>
                 </el-card>
             </el-col>
@@ -155,8 +155,7 @@ export default {
         });
 
         let isDuringTime = function (beginDateStr, endDateStr
-    )
-        {
+        ) {
             let curDate = new Date(),
                 beginDate = new Date(beginDateStr),
                 endDate = new Date(endDateStr);
@@ -166,14 +165,16 @@ export default {
             return false;
         }
 
-        if (isDuringTime(settings.step_1_period[0], settings.step_1_period[1])) {
-            data.currentStage = "Pre"
+        if (new Date() < new Date(settings.step_1_period[0])) {
+            data.currentStage ="预开放"
+        } else if (isDuringTime(settings.step_1_period[0], settings.step_1_period[1])) {
+            data.currentStage = "问卷填写"
         } else if (isDuringTime(settings.step_2_period[0], settings.step_2_period[1])) {
-            data.currentStage = "Matching"
+            data.currentStage = "算法匹配"
         } else if (isDuringTime(settings.step_3_period[0], settings.step_3_period[1])) {
-            data.currentStage = "Mating";
+            data.currentStage = "自由组队";
         } else {
-            data.currentStage = "Closed";
+            data.currentStage = "管理员确认";
         }
         return data;
     }

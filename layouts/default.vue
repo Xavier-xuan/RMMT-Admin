@@ -109,7 +109,11 @@ export default {
 
                 }],
                 confirm_password: [
-                    {validator: confirm_password, trigger: 'blur'}
+                    {
+                        validator: confirm_password,
+                        trigger: 'blur',
+                        required: true,
+                    }
                 ],
             }
         }
@@ -140,7 +144,7 @@ export default {
         // 五分钟发送一次心跳包 刷新token
         setInterval(async () => {
             await this.$auth.fetchUser()
-        }, 5*60*1000)
+        }, 5 * 60 * 1000)
     }
 }
 </script>

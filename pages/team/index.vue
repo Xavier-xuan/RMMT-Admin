@@ -6,19 +6,19 @@
                 <div class="default-container">
                     <el-row type="flex" align="center" justify="center">
                         <el-col :span="24">
-                            <el-table :data="teams">
+                            <el-bigdata-talbe :data="teams" >
                                 <el-table-column label="ID" prop="id">
                                 </el-table-column>
-                                <el-table-column prop="gender" label="Gender"
-                                                 :filters="[{text: 'Male', value: 1}, {text: 'Female', value: 2}]"
+                                <el-table-column prop="gender" label="性别"
+                                                 :filters="[{text: '男', value: 1}, {text: '女', value: 2}]"
                                                  :filter-method="gender_filter_handler">
                                     <template slot-scope="scope">
-                                        <el-tag v-if="scope.row.gender === 1" size="medium">Male</el-tag>
-                                        <el-tag v-if="scope.row.gender === 2" size="medium" type="danger">Female
+                                        <el-tag v-if="scope.row.gender === 1" size="medium">男</el-tag>
+                                        <el-tag v-if="scope.row.gender === 2" size="medium" type="danger">女
                                         </el-tag>
                                     </template>
                                 </el-table-column>
-                                <el-table-column :label="'Student ' + index" prop="students"
+                                <el-table-column :label="'学生 ' + index" prop="students"
                                                  v-for="index in team_max_student_count" :key="index">
                                     <template slot-scope="scope">
                                         <el-dropdown v-if="scope.row.students[index -1]" trigger="click">
@@ -29,44 +29,42 @@
                                                 <nuxt-link
                                                     :to="'/student/' + scope.row.students[index -1].id + '/edit'">
                                                     <el-dropdown-item icon="el-icon-edit">
-
-                                                        Edit
+                                                        编辑
                                                     </el-dropdown-item>
                                                 </nuxt-link>
                                                 <nuxt-link
                                                     :to="'/student/' + scope.row.students[index -1].id + '/questionnaire'">
                                                     <el-dropdown-item icon="el-icon-document">
-                                                        Questionnaire
+                                                        问卷
                                                     </el-dropdown-item>
                                                 </nuxt-link>
                                             </el-dropdown-menu>
                                         </el-dropdown>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="Action" fixed="right" width="240">
+                                <el-table-column label="操作" fixed="right" width="240">
                                     <template slot-scope="scope">
                                         <el-button v-if="scope.row.students.length < team_max_student_count"
                                                    type="warning" @click="show_add_student_plane(scope.row)"
-                                                   size="mini">Add
-                                            Student
+                                                   size="mini">添加学生
                                         </el-button>
                                         <el-button v-else type="warning" size="mini" @click="show_add_student_plane"
-                                                   disabled>Add Student
+                                                   disabled>添加学生
                                         </el-button>
-                                        <el-button type="danger" @click="delete_team(scope.row.id)" size="mini">Delete
+                                        <el-button type="danger" @click="delete_team(scope.row.id)" size="mini">删除
                                         </el-button>
                                     </template>
                                 </el-table-column>
-                            </el-table>
+                            </el-bigdata-talbe>
                         </el-col>
                     </el-row>
 
                     <el-row type="flex" align="right" justify="end" style="margin-top: 20px">
                         <el-col :span="8">
-                            <el-button @click="exportAsExcel" type="success">Export as Excel
+                            <el-button @click="exportAsExcel" type="success">导出为Excel
                             </el-button>
 
-                            <el-button @click="show_create_team_plane = true" type="primary">Create a New Team
+                            <el-button @click="show_create_team_plane = true" type="primary">创建队伍
                             </el-button>
                         </el-col>
                     </el-row>
@@ -79,9 +77,9 @@
         <el-dialog title="Basic information of the new team" :visible.sync="show_create_team_plane">
             <el-form :model="new_team_data">
                 <el-form-item label="Gender" label-width="240px">
-                    <el-select v-model.number="new_team_data.gender" placeholder="Please select gender for new team.">
-                        <el-option label="Male" :value="1"></el-option>
-                        <el-option label="Female" :value="2"></el-option>
+                    <el-select v-model.number="new_team_data.gender" placeholder="请选择性别">
+                        <el-option label="男" :value="1"></el-option>
+                        <el-option label="女" :value="2"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="Description" label-width="240px">
@@ -89,17 +87,17 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="show_create_team_plane = false">Cancel</el-button>
-                <el-button type="primary" @click="create_team">Create</el-button>
+                <el-button @click="show_create_team_plane = false">取消</el-button>
+                <el-button type="primary" @click="create_team">创建</el-button>
             </div>
         </el-dialog>
 
-        <el-dialog :title="'Select students that you want to join the team (ID: #' + add_student.team_id + ' )' "
+        <el-dialog :title="'请选择你想要添加到这个队伍的学生 (ID: #' + add_student.team_id + ' )' "
                    :visible.sync="show_add_student" width="650px">
-            You can select {{ add_student.limit }} student(s) at most
+            你最多可以选择 {{ add_student.limit }} 名学生
             <el-form>
                 <el-select v-model="add_student.selected_students" filterable
-                           placeholder="Please select one or more students."
+                           placeholder="请选择至少一名学生"
                            :multiple-limit="add_student.limit"
                            multiple
                            style="width: 300px;margin-top: 20px">
@@ -115,8 +113,8 @@
                 </el-select>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="show_add_student = false">Cancel</el-button>
-                <el-button type="primary" @click="do_import">Confirm</el-button>
+                <el-button @click="show_add_student = false">取消</el-button>
+                <el-button type="primary" @click="do_import">确定</el-button>
             </div>
         </el-dialog>
 
@@ -181,7 +179,7 @@ export default {
                         students: [],
                         id: data.data.team_id
                     })
-                    this.$message.success("A new team has been created. (ID: #" + data.data.team_id + " )")
+                    this.$message.success("新队伍已创建 (ID: #" + data.data.team_id + " )")
                     this.new_team_data = {
                         gender: 1,
                         description: "Created by admin."
@@ -194,18 +192,18 @@ export default {
 
             // 构造数据 Start
             let table_headers = [
-                'Team ID', 'Gender', 'Description'
+                '队伍 ID', '性别', '备注'
             ]
 
             for (let i = 1; i <= this.team_max_student_count; i++) {
-                table_headers.push("Student " + i + " ID", "Student " + i + " Name")
+                table_headers.push("学生 " + i + " ID", "学生 " + i + " Name")
             }
             let table_data = []
             table_data.push(table_headers)
             for (let team of this.teams) {
                 let row_data = [
                     team.id,
-                    team.gender === 1 ? 'Male' : "Female",
+                    team.gender === 1 ? '男' : "女",
                     team.description
                 ]
 
@@ -236,11 +234,11 @@ export default {
             try {
                 FileSaver.saveAs(
                     new Blob([table_write], {type: "application/octet-stream"}),
-                    "sheetjs.xlsx"
+                    "队伍名单.xlsx"
                 );
             } catch (e) {
                 if (typeof console !== "undefined") console.log(e, table_write);
-                this.$message.error("Export Failed!")
+                this.$message.error("导出失败!")
             }
             return table_write;
         },
@@ -286,7 +284,7 @@ export default {
                         })
                     }
                     this.show_add_student = false
-                    this.$message.success("Success")
+                    this.$message.success("成功")
                 }
             }).catch(() => {
                 return

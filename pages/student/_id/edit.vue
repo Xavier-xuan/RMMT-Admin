@@ -9,26 +9,25 @@
                             <el-input type="number" v-model="student.id" disabled></el-input>
                         </el-form-item>
 
-                        <el-form-item prop="name" label="Name">
+                        <el-form-item prop="name" label="姓名">
                             <el-input v-model="student.name"></el-input>
                         </el-form-item>
-                        <el-form-item prop="gender" label="Gender">
-                            <el-radio v-model="student.gender" :label="1">Male</el-radio>
-                            <el-radio v-model="student.gender" :label="2">Female</el-radio>
+                        <el-form-item prop="gender" label="性别" >
+                            <el-radio v-model="student.gender" disabled :label="1">男</el-radio>
+                            <el-radio v-model="student.gender" disabled :label="2">女</el-radio>
                         </el-form-item>
 
-                        <el-form-item prop="password" label="Password">
+                        <el-form-item prop="password" label="密码">
                             <el-input v-model="student.password"
-                                      placeholder="If you don't want to change it, just leave it blank"></el-input>
+                                      placeholder="如果不想更改密码，请留空"></el-input>
                         </el-form-item>
 
-                        <el-form-item prop="contact" label="Contact">
-                            <el-input v-model="student.contact"
-                                      placeholder="Phone Number,QQ Number,Wechat ID, etc."></el-input>
+                        <el-form-item prop="contact" label="联系方式">
+                            <el-input type="textarea" v-model="student.contact"></el-input>
                         </el-form-item>
 
-                        <el-form-item prop="teamID" label="Team ID">
-                            <el-select v-model="student.team_id" filterable placeholder="Please select a team">
+                        <el-form-item prop="teamID" label="队伍ID">
+                            <el-select v-model="student.team_id" filterable placeholder="请选择一个队伍">
                                 <el-option :value="null" :key="-1" label="None"></el-option>
                                 <el-option
                                     v-for="item in team_options"

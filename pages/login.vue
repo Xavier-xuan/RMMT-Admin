@@ -1,20 +1,21 @@
 <template>
     <div class="login-box">
         <div class="login-card">
+            <ZhixinLogo></ZhixinLogo>
             <div class="logo">
                 Roommate Matcher Admin
             </div>
             <div class="login-form">
                 <el-form ref="login_form" :model="login_form" :rules="rules">
-                    <el-form-item label="Email" prop="email">
+                    <el-form-item label="电子邮箱" prop="email">
                         <el-input v-model="login_form.email"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="Password" prop="password">
+                    <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model="login_form.password"></el-input>
                     </el-form-item>
 
-                    <el-button type="primary" @click="login">Login</el-button>
+                    <el-button type="primary" @click="login">登录</el-button>
                 </el-form>
             </div>
         </div>
@@ -41,7 +42,7 @@ export default {
                 password: {
                     type: 'string',
                     pattern: /^[^\s]*$/,
-                    message: "The password must be a string of at least 8 characters",
+                    message: "密码需大于8位",
                     required: true,
                     min: 8,
                     trigger: 'blur'
@@ -60,7 +61,7 @@ export default {
                         })
 
                         if (response.data.code === 200) {
-                            this.$message.success("Welcome " + this.$auth.user.username + "!")
+                            this.$message.success("你好， " + this.$auth.user.username + "!")
                         }
 
                     } catch (e) {

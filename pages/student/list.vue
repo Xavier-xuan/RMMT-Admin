@@ -9,67 +9,67 @@
                         <el-table-column prop="id" label="#ID" sortable>
                         </el-table-column>
 
-                        <el-table-column prop="name" label="Name" sortable>
+                        <el-table-column prop="name" label="姓名" sortable>
 
                         </el-table-column>
 
-                        <el-table-column prop="gender" label="Gender"
-                                         :filters="[{text: 'Male', value: 1}, {text: 'Female', value: 2}]"
+                        <el-table-column prop="gender" label="性别"
+                                         :filters="[{text: '男', value: 1}, {text: '女', value: 2}]"
                                          :filter-method="gender_filter_handler">
                             <template slot-scope="scope">
-                                <el-tag v-if="scope.row.gender === 1" size="medium">Male</el-tag>
-                                <el-tag v-if="scope.row.gender === 2" size="medium" type="danger">Female</el-tag>
+                                <el-tag v-if="scope.row.gender === 1" size="medium">男</el-tag>
+                                <el-tag v-if="scope.row.gender === 2" size="medium" type="danger">女</el-tag>
                             </template>
 
                         </el-table-column>
 
-                        <el-table-column prop="has_answered_questionnaire" label="Has Answered Questionnaire"
-                                         :filters="[{text: 'Yes', value: true}, {text: 'No', value: false}]"
+                        <el-table-column prop="has_answered_questionnaire" label="已回答问卷"
+                                         :filters="[{text: '是', value: true}, {text: '否', value: false}]"
                                          :filter-method="questionnaire_filter_handler">
                             <template slot-scope="scope">
-                                <el-tag v-if="scope.row.has_answered_questionnaire" type="success" size="medium">Yes
+                                <el-tag v-if="scope.row.has_answered_questionnaire" type="success" size="medium">是
                                 </el-tag>
-                                <el-tag v-else size="medium" type="danger">No</el-tag>
+                                <el-tag v-else size="medium" type="danger">否</el-tag>
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="team_id" label="Team"
-                                         :filters="[{text: 'Has Joined Team', value: '1'}, {text: 'Hasn\'t Joined Team', value: undefined}]"
+                        <el-table-column prop="team_id" label="队伍"
+                                         :filters="[{text: '已组队', value: '1'}, {text: '未组队', value: undefined}]"
                                          :filter-method="team_filter_handler">
                             <template slot-scope="scope">
                                 <el-tag v-if="scope.row.team != null" size="medium" type="success">
-                                    Team ID: {{ scope.row.team.id }}
+                                    队伍ID： {{ scope.row.team.id }}
                                 </el-tag>
-                                <el-tag v-if="scope.row.team == null" size="medium" type="warning">None
+                                <el-tag v-if="scope.row.team == null" size="medium" type="warning">无
                                 </el-tag>
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="last_logged_at" label="Last Logged At" sortable>
+                        <el-table-column prop="last_logged_at" label="最后一次登录时间" sortable>
                         </el-table-column>
 
-                        <el-table-column prop="created_at" label="Created at" sortable>
+                        <el-table-column prop="created_at" label="账号创建时间" sortable>
                         </el-table-column>
 
-                        <el-table-column label="" fixed="right" width="240">
+                        <el-table-column label="" fixed="right">
                             <template slot-scope="scope">
                                 <el-dropdown>
                                     <span class="el-dropdown-link">
-                                             Actions <i class="el-icon-arrow-down el-icon--right"></i>
+                                             操作 <i class="el-icon-arrow-down el-icon--right"></i>
                                      </span>
                                     <el-dropdown-menu slot="dropdown">
                                         <nuxt-link :to="'/student/' + scope.row.id + '/edit'">
                                             <el-dropdown-item icon="el-icon-edit">
-                                                Edit
+                                                编辑
                                             </el-dropdown-item>
                                         </nuxt-link>
                                         <nuxt-link :to="'/student/' + scope.row.id + '/questionnaire'">
                                             <el-dropdown-item icon="el-icon-document">
-                                                Questionnaire
+                                                问卷
                                             </el-dropdown-item>
                                         </nuxt-link>
                                         <el-dropdown-item icon="el-icon-delete" @click="delete_student(scope.row)">
-                                            Delete
+                                            删除
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </el-dropdown>
