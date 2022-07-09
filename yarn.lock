@@ -7126,6 +7126,11 @@ sort-keys@^2.0.0:
   dependencies:
     is-plain-obj "^1.0.0"
 
+sortablejs@1.10.2:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.10.2.tgz#6e40364d913f98b85a14f6678f92b5c1221f5290"
+  integrity sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==
+
 source-list-map@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
@@ -7658,6 +7663,33 @@ uglify-js@^3.5.1:
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.0.tgz#2d6a689d94783cab43975721977a13c2afec28f1"
   integrity sha512-x+xdeDWq7FiORDvyIJ0q/waWd4PhjBNOm5dQUOq2AKC0IEjxOS66Ha9tctiVDGcRQuh69K7fgU5oRuTK4cysSg==
 
+umy-table@1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/umy-table/-/umy-table-1.1.8.tgz#d1d7ad433d0e7276be88dddb4a186ea98c26a2d6"
+  integrity sha512-yqPMFwZ6MUNqI73KamsNKBTbHRA7VuVZDEWobaySghtf4n/s7INuTNQoADB/ROVK57WOXr99Xpnol0aMqGlASA==
+  dependencies:
+    async-validator "~1.8.1"
+    deepmerge "^1.2.0"
+    normalize-wheel "^1.0.1"
+    resize-observer-polyfill "^1.5.0"
+    throttle-debounce "^1.0.1"
+    vuedraggable "^2.23.2"
+    xe-utils "^3.0.0-beta.12"
+
+umy-ui@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/umy-ui/-/umy-ui-1.1.6.tgz#d92b9b95cf83848e840116936cfe6167cf2cec91"
+  integrity sha512-wX0S29B5sFn8q0MvU9PEl8DGZeQmZXOJlLrwaCJ2UHiIQZCANWgXMBjjQgpaequ1gRZ8BekEu7Sn7hJccm9YMQ==
+  dependencies:
+    async-validator "~1.8.1"
+    deepmerge "^1.2.0"
+    normalize-wheel "^1.0.1"
+    resize-observer-polyfill "^1.5.0"
+    throttle-debounce "^1.0.1"
+    umy-table "1.1.8"
+    vuedraggable "^2.23.2"
+    xe-utils "^3.0.0-beta.12"
+
 unbox-primitive@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/unbox-primitive/-/unbox-primitive-1.0.1.tgz#085e215625ec3162574dc8859abee78a59b14471"
@@ -7952,6 +7984,13 @@ vue@^2.6.12, vue@^2.6.14:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==
 
+vuedraggable@^2.23.2:
+  version "2.24.3"
+  resolved "https://registry.yarnpkg.com/vuedraggable/-/vuedraggable-2.24.3.tgz#43c93849b746a24ce503e123d5b259c701ba0d19"
+  integrity sha512-6/HDXi92GzB+Hcs9fC6PAAozK1RLt1ewPTLjK0anTYguXLAeySDmcnqE8IC0xa7shvSzRjQXq3/+dsZ7ETGF3g==
+  dependencies:
+    sortablejs "1.10.2"
+
 vuex@^3.6.2:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.6.2.tgz#236bc086a870c3ae79946f107f16de59d5895e71"
@@ -8177,7 +8216,7 @@ ws@^7.3.1:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.6.tgz#e59fc509fb15ddfb65487ee9765c5a51dec5fe7b"
   integrity sha512-6GLgCqo2cy2A2rjCNFlxQS6ZljG/coZfZXclldI8FB/1G3CCI36Zd8xy2HrFVACi8tfk5XrgLQEk+P0Tnz9UcA==
 
-xe-utils@3:
+xe-utils@3, xe-utils@^3.0.0-beta.12:
   version "3.5.4"
   resolved "https://registry.yarnpkg.com/xe-utils/-/xe-utils-3.5.4.tgz#d4335633fede280c68c1c0c9a4c8f3a533cfd831"
   integrity sha512-oH7VOgvHv34pn198dhKPVKnuEHV22Q06YpCTVnAS3JuutylmZj/rtJGvn0BxxWQ37w2LgCknoebLA4uIGXwFtw==

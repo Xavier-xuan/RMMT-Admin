@@ -6,7 +6,7 @@
                 <div class="default-container">
                     <el-row type="flex" align="center" justify="center">
                         <el-col :span="24">
-                            <el-bigdata-talbe :data="teams" >
+                            <el-table :data="teams" >
                                 <el-table-column label="ID" prop="id">
                                 </el-table-column>
                                 <el-table-column prop="gender" label="性别"
@@ -55,7 +55,7 @@
                                         </el-button>
                                     </template>
                                 </el-table-column>
-                            </el-bigdata-talbe>
+                            </el-table>
                         </el-col>
                     </el-row>
 

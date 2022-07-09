@@ -5,15 +5,15 @@
         <el-row type="flex" align="center" justify="center">
             <el-col :span="22">
                 <div class="table-container">
-                    <el-table :data="students" :default-sort="{prop: 'name', order:'ascending'}" stripe>
-                        <el-table-column prop="id" label="#ID" sortable>
-                        </el-table-column>
+                    <u-table :height="tableHeight" use-virtual :data="students" :border="false" :default-sort="{prop: 'name', order:'ascending'}" stripe>
+                        <u-table-column prop="id" label="#ID" sortable>
+                        </u-table-column>
 
-                        <el-table-column prop="name" label="姓名" sortable>
+                        <u-table-column prop="name" label="姓名" sortable>
 
-                        </el-table-column>
+                        </u-table-column>
 
-                        <el-table-column prop="gender" label="性别"
+                        <u-table-column prop="gender" label="性别"
                                          :filters="[{text: '男', value: 1}, {text: '女', value: 2}]"
                                          :filter-method="gender_filter_handler">
                             <template slot-scope="scope">
@@ -21,9 +21,9 @@
                                 <el-tag v-if="scope.row.gender === 2" size="medium" type="danger">女</el-tag>
                             </template>
 
-                        </el-table-column>
+                        </u-table-column>
 
-                        <el-table-column prop="has_answered_questionnaire" label="已回答问卷"
+                        <u-table-column prop="has_answered_questionnaire" label="已回答问卷"
                                          :filters="[{text: '是', value: true}, {text: '否', value: false}]"
                                          :filter-method="questionnaire_filter_handler">
                             <template slot-scope="scope">
@@ -31,9 +31,9 @@
                                 </el-tag>
                                 <el-tag v-else size="medium" type="danger">否</el-tag>
                             </template>
-                        </el-table-column>
+                        </u-table-column>
 
-                        <el-table-column prop="team_id" label="队伍"
+                        <u-table-column prop="team_id" label="队伍"
                                          :filters="[{text: '已组队', value: '1'}, {text: '未组队', value: undefined}]"
                                          :filter-method="team_filter_handler">
                             <template slot-scope="scope">
@@ -43,15 +43,15 @@
                                 <el-tag v-if="scope.row.team == null" size="medium" type="warning">无
                                 </el-tag>
                             </template>
-                        </el-table-column>
+                        </u-table-column>
 
-                        <el-table-column prop="last_logged_at" label="最后一次登录时间" sortable>
-                        </el-table-column>
+                        <u-table-column prop="last_logged_at" label="最后一次登录时间" sortable>
+                        </u-table-column>
 
-                        <el-table-column prop="created_at" label="账号创建时间" sortable>
-                        </el-table-column>
+                        <u-table-column prop="created_at" label="账号创建时间" sortable>
+                        </u-table-column>
 
-                        <el-table-column label="" fixed="right">
+                        <u-table-column label="" fixed="right">
                             <template slot-scope="scope">
                                 <el-dropdown>
                                     <span class="el-dropdown-link">
@@ -74,8 +74,8 @@
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
-                        </el-table-column>
-                    </el-table>
+                        </u-table-column>
+                    </u-table>
 
                     <!--                    <div class="pagination">-->
                     <!--                        <el-pagination-->
@@ -153,9 +153,9 @@ export default {
 
     },
     computed: {
-        // tableData() {
-        //     return this.students.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
-        // }
+        tableHeight(){
+            return window.screen.height - 400
+        }
     }
 }
 </script>

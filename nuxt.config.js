@@ -38,6 +38,7 @@ export default {
         '@/plugins/lodash',
         '@/plugins/axios',
         '@/plugins/vform',
+        '@/plugins/umy-ui',
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
