@@ -124,7 +124,6 @@ export default {
             this.formJson.widgetList.forEach(element => {
                 switch (element.type) {
                     case "radio":
-                    case "checkbox":
                         // 要看选项是不是都是 Integer 才能判断类型
                         let is_int = true
                         element.options.optionItems.forEach(item => {
@@ -138,6 +137,8 @@ export default {
                         else
                             this.$set(element, 'weight', -2) // 系统禁止设置权重的项目 设置为-2
                         break
+                    case "checkbox":
+                        this.$set(element, 'weight', 1)
                     case "time-range":
                     case "date-range":
                     case "slider":
@@ -188,12 +189,13 @@ export default {
                         else {
                             switch (element.type) {
                                 case "radio":
-                                case "checkbox":
                                     if (element.weight > -2)
                                         data_type = "number"
                                     else
                                         data_type = "text"
                                     break
+                                case "checkbox":
+                                    data_type = "text_array" // 只有这个array是多元数组
                                 case "time":
                                     data_type = "time"
                                     break
