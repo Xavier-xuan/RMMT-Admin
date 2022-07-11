@@ -196,6 +196,7 @@ export default {
                                     break
                                 case "checkbox":
                                     data_type = "text_array" // 只有这个array是多元数组
+                                    break
                                 case "time":
                                     data_type = "time"
                                     break
