@@ -58,10 +58,10 @@ export default {
                 formTemplates: false,
 
 //是否禁止修改唯一名称
-                widgetNameReadonly: false,
+                widgetNameReadonly: true,
 
 //是否显示组件事件属性折叠面板
-                eventCollapse: true,
+                eventCollapse: false,
 
 //是否显示清空设计器按钮
                 clearDesignerButton: false,
@@ -84,14 +84,17 @@ export default {
 //工具按钮栏最大宽度（单位px）
 //如新增按钮后不可见，请调大
 //如右侧空白区域过大，请调小
-                toolbarMaxWidth: 420,
+                toolbarMaxWidth: 300,
 
 //工具栏按钮最小宽度（单位px）
 //值必须小于toolbarMaxWidth
                 toolbarMinWidth: 300,
 
 //表单设计器预设CSS代码
-                presetCssCode: '',
+                presetCssCode: '.right-toolbar{\n' +
+                    '    float: none;\n' +
+                    '    overflow: auto;\n' +
+                    '}',
 
                 productName: '',
                 productTitle: '',
@@ -308,5 +311,9 @@ export default {
 
 .save-btn {
     margin-top: 20px;
+}
+.right-toolbar{
+    float: none;
+    overflow: auto;
 }
 </style>
