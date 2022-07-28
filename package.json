@@ -25,7 +25,7 @@
     "vxe-table": "3",
     "webpack": "^4.46.0",
     "xe-utils": "3",
-    "xlsx": "^0.18.0"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz"
   },
   "devDependencies": {}
 }

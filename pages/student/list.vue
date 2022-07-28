@@ -68,7 +68,7 @@
                                                 问卷
                                             </el-dropdown-item>
                                         </nuxt-link>
-                                        <el-dropdown-item icon="el-icon-delete" @click="delete_student(scope.row)">
+                                        <el-dropdown-item icon="el-icon-delete" @click.native="delete_student(scope.row)">
                                             删除
                                         </el-dropdown-item>
                                     </el-dropdown-menu>

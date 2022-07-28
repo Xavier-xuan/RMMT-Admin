@@ -123,9 +123,8 @@
 </template>
 
 <script>
-import XLSX from 'xlsx'
 import FileSaver from 'file-saver'
-
+let XLSX = require("xlsx");
 export default {
     name: "index",
     data() {
