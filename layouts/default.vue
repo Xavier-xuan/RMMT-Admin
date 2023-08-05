@@ -4,12 +4,15 @@
         <el-container>
             <el-header>
 
-                <el-row class="header" type="flex" align="middle">
+                <el-row class="header" type="flex" align="middle" justify="space-between" >
                     <el-col class="site-name" :span="6">
                         <a href="/">RMMT Admin</a>
                     </el-col>
 
-                    <el-col class="menu" :offset="8" :span="10">
+                    <el-col class="site-name" :span="4" >
+                    </el-col>
+
+                    <el-col class="menu" :span="10" :lg="10" :md="14" >
                         <el-menu ref="navigation_bar" mode="horizontal" :default-active="navUrl"
                                  :router="true">
                             <el-menu-item index="/dashboard">仪表盘</el-menu-item>

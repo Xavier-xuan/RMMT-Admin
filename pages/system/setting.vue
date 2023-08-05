@@ -46,6 +46,12 @@
                             <el-input-number v-model="team_max_student_count"></el-input-number>
                         </el-form-item>
 
+                        <el-form-item label="学长的碎碎念 (支持Markdown语法)">
+                            <el-input type="textarea" v-model="tips" :autosize="{ minRows: 5}">
+                                
+                            </el-input>
+                        </el-form-item>
+
                         <el-button type="primary" @click="save">保存</el-button>
 
                     </el-form>
@@ -64,6 +70,7 @@ export default {
             step_1_period: [],
             step_2_period: [],
             step_3_period: [],
+            tips: ""
         }
 
     },
@@ -77,6 +84,7 @@ export default {
                 step_2_end_at: this.step_2_period[1],
                 step_3_start_at: this.step_3_period[0],
                 step_3_end_at: this.step_3_period[1],
+                tips: this.tips,
             }
             this.$axios.$post("/system_setting/update", data_to_store).then(data => {
                 if (data.code === 200) {
@@ -107,7 +115,8 @@ export default {
                     kv_system_settings.step_3_start_at,
                     kv_system_settings.step_3_end_at,
                 ],
-                team_max_student_count: kv_system_settings.team_max_student_count
+                team_max_student_count: kv_system_settings.team_max_student_count,
+                tips: kv_system_settings.tips,
             }
         })
     }
