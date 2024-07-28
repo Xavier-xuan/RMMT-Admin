@@ -1,4 +1,4 @@
-# RDP-admin
+# RMMT-admin
 
 ## Build Setup
 
