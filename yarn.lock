@@ -8386,7 +8386,7 @@ vary@^1.1.2, vary@~1.1.2:
 
 vform-builds@^2.2.7:
   version "2.2.9"
-  resolved "https://registry.yarnpkg.com/vform-builds/-/vform-builds-2.2.9.tgz#291fc5488ec660b6c274e9658e809f9bbf9b7ccc"
+  resolved "https://registry.npmmirror.com/vform-builds/-/vform-builds-2.2.9.tgz#291fc5488ec660b6c274e9658e809f9bbf9b7ccc"
   integrity sha512-fAGIc12G9+S973JCu3DonVChyojDepQT0ZZcBk28Er2AFplKCZ8QKPHsqAFTAseWOVSNEqnC75oT5iPfbtBGAQ==
 
 vm-browserify@^1.0.1:
