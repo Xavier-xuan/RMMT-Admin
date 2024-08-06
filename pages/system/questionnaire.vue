@@ -10,11 +10,9 @@
 
         <el-dialog title="默认权重设置" :visible.sync="show_weight_plane">
             <div class="tips">
-                目前系统仅对能够量化评估的项目进行算法匹配，因此只能设置问卷中部分问题的权重，其他没有权重（或权重为0）的问题代表仅作个人资料展示，不作算法匹配的参考项目 <br/>
-                如果某个问题的答案可能出现波动较大的情况，例如每个月的生活费这类的问题，建议根据情况减少其权重。反之亦然 <br/>
-                <span style="color: #E6A23C;">目前支持对必填且答案为数值类型的问题进行算法匹配，因此非必填选项将不能设置权重</span><br/>
+                <span style="color: #E6A23C;">目前支持对必填的问题进行算法匹配，因此非必填选项将不能设置权重</span><br/>
                 要禁止某问题作为算法匹配的参考项（即禁止学生设置该问题的权重），请将该项权重调整为 -1 <br/>
-                <span style="color: #E6A23C;">请务必将答案为非数值类型问题的权重设置为 -1 ，否则可能引起程序奔溃</span><br/>
+                Update at Aug. 2024: 感谢肖翊成同学，现在系统采用人工智能模型计算问卷的相似度，支持所有类型的回答（包括文本）。
             </div>
             <el-table :data="formJson.widgetList" stripe>
                 <el-table-column
@@ -127,19 +125,7 @@ export default {
             this.formJson.widgetList.forEach(element => {
                 switch (element.type) {
                     case "radio":
-                        // 要看选项是不是都是 Integer 才能判断类型
-                        let is_int = true
-                        element.options.optionItems.forEach(item => {
-                            if (isNaN(item.value))
-                                is_int = false
-                            else
-                                item.value = Number(item.value) // 能转数字的都转数字 不然修改表单时会出现数据类型不匹配的问题
-                        })
-                        if (is_int)
-                            this.$set(element, 'weight', 5) // 必须要通过这种方式动态增加属性，不然Vue无法监听事件，无法使用v-model双向绑定
-                        else
-                            this.$set(element, 'weight', -2) // 系统禁止设置权重的项目 设置为-2
-                        break
+                        this.$set(element, 'weight', 5) // 必须要通过这种方式动态增加属性，不然Vue无法监听事件，无法使用v-model双向绑定
                     case "checkbox":
                         this.$set(element, 'weight', 1)
                     case "time-range":
@@ -152,7 +138,7 @@ export default {
                         this.$set(element, 'weight', 1)
                         break
                     default:
-                        this.$set(element, 'weight', -2) // 系统禁止设置权重的项目 设置为-2
+                        this.$set(element, 'weight', 1)
                 }
 
                 // 仅支持必填选项
