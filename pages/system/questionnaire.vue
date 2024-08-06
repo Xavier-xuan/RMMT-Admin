@@ -134,6 +134,8 @@ export default {
                     case "rate":
                     case "date":
                     case "time":
+                    case "input": // Input 和 Textarea 也可以设置权重
+                    case "textarea":
                     case "number":
                         this.$set(element, 'weight', 1)
                         break
