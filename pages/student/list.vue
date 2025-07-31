@@ -5,12 +5,33 @@
         <el-row type="flex" align="center" justify="center">
             <el-col :span="22">
                 <div class="table-container">
-                    <el-table :height="tableHeight" use-virtual :data="students" :border="false" :default-sort="{prop: 'name', order:'ascending'}" stripe>
+                    <!-- 添加搜索框 -->
+                    <el-row class="search-bar">
+                        <el-col :span="8">
+                            <el-input
+                                v-model="searchQuery"
+                                placeholder="输入姓名或ID搜索"
+                                clearable
+                                @clear="handleSearchClear"
+                                @keyup.enter.native="handleSearch">
+                                <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
+                            </el-input>
+                        </el-col>
+                    </el-row>
+                    
+                    <el-table 
+                        ref="elTable"
+                        :height="tableHeight" 
+                        use-virtual 
+                        :data="paginatedStudents" 
+                        :border="false" 
+                        :default-sort="{prop: 'name', order:'ascending'}" 
+                        @filter-change="handleFilterChange"
+                        stripe>
                         <el-table-column prop="id" label="#ID" sortable>
                         </el-table-column>
 
                         <el-table-column prop="name" label="姓名" sortable>
-
                         </el-table-column>
 
                         <el-table-column prop="gender" label="性别"
@@ -20,15 +41,13 @@
                                 <el-tag v-if="scope.row.gender === 1" size="medium">男</el-tag>
                                 <el-tag v-if="scope.row.gender === 2" size="medium" type="danger">女</el-tag>
                             </template>
-
                         </el-table-column>
 
                         <el-table-column prop="has_answered_questionnaire" label="已回答问卷"
                                          :filters="[{text: '是', value: true}, {text: '否', value: false}]"
                                          :filter-method="questionnaire_filter_handler">
                             <template slot-scope="scope">
-                                <el-tag v-if="scope.row.has_answered_questionnaire" type="success" size="medium">是
-                                </el-tag>
+                                <el-tag v-if="scope.row.has_answered_questionnaire" type="success" size="medium">是</el-tag>
                                 <el-tag v-else size="medium" type="danger">否</el-tag>
                             </template>
                         </el-table-column>
@@ -40,8 +59,7 @@
                                 <el-tag v-if="scope.row.team != null" size="medium" type="success">
                                     队伍ID： {{ scope.row.team.id }}
                                 </el-tag>
-                                <el-tag v-if="scope.row.team == null" size="medium" type="warning">无
-                                </el-tag>
+                                <el-tag v-if="scope.row.team == null" size="medium" type="warning">无</el-tag>
                             </template>
                         </el-table-column>
 
@@ -77,21 +95,22 @@
                         </el-table-column>
                     </el-table>
 
-                    <!--                    <div class="pagination">-->
-                    <!--                        <el-pagination-->
-                    <!--                            layout="prev, pager, next"-->
-                    <!--                            :total="students.length"-->
-                    <!--                            :page-size="pageSize"-->
-                    <!--                            @current-change="page_change">-->
-                    <!--                        </el-pagination>-->
-                    <!--                    </div>-->
+                    <!-- 添加分页 -->
+                    <div class="pagination">
+                        <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-sizes="[10, 20, 30, 50]"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="filteredStudents.length">
+                        </el-pagination>
+                    </div>
                 </div>
             </el-col>
         </el-row>
-
-
     </div>
-
 </template>
 
 <script>
@@ -99,8 +118,16 @@ export default {
     name: "list",
     data() {
         return {
-            pageSize: 30,
+            pageSize: 20,
             currentPage: 1,
+            searchQuery: '',
+            originalStudents: [], // 保存原始数据
+            students: [], // 用于显示的数据
+            filters: { // 新增：存储当前的筛选条件
+                gender: null,
+                has_answered_questionnaire: null,
+                team_id: null
+            }
         }
     },
     methods: {
@@ -110,12 +137,7 @@ export default {
         questionnaire_filter_handler(value, row, column) {
             return row.has_answered_questionnaire === value
         },
-        page_change(currentPage) {
-            this.currentPage = currentPage
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-        },
         team_filter_handler(value, row) {
-            console.info(value)
             if (value === undefined) {
                 return row.team == null
             } else {
@@ -143,19 +165,127 @@ export default {
             }).catch(() => {
                 return true
             })
-        }, 2000)
-    },
-    asyncData({params, $axios}) {
-        return $axios.$get('/student/list').then(data => {
-            console.info(data.data)
-            return data.data
-        })
+        }, 2000),
+        // 处理搜索
+        handleSearch() {
+            if (!this.searchQuery) {
+                this.students = [...this.originalStudents];
+                return;
+            }
+            
+            const query = this.searchQuery.toLowerCase();
+            console.info(this.originalStudents)
+            this.students = this.originalStudents.filter(student => {
+                return (
+                    String(student.id).includes(query) ||
+                    (student.name && student.name.toLowerCase().includes(query))
+                );
+            });
+            this.currentPage = 1; // 重置到第一页
+        },
+        // 清除搜索
+        handleSearchClear() {
+            this.students = [...this.originalStudents];
+            this.currentPage = 1;
+        },
+        // 分页大小变化
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.currentPage = 1;
+        },
+        // 当前页变化
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+        },
+        handleFilterChange(filters) {
+            console.log("原始 filters 数据:", filters); // 调试用
 
+            // 初始化筛选条件
+            const newFilters = {
+                gender: null,
+                has_answered_questionnaire: null,
+                team_id: null
+            };
+
+            // 遍历所有列，动态匹配筛选值
+            this.$refs.elTable.columns.forEach(column => {
+                const columnKey = column.id; // 例如 "el-table_1_column_4"
+                if (filters[columnKey]) {
+                    const filterValue = filters[columnKey][0]; // 取数组第一个值
+                    switch (column.property) { // 根据列的 prop 分配筛选值
+                        case "gender":
+                            newFilters.gender = filterValue;
+                            break;
+                        case "has_answered_questionnaire":
+                            newFilters.has_answered_questionnaire = filterValue;
+                            break;
+                        case "team_id":
+                            newFilters.team_id = filterValue;
+                            break;
+                    }
+                }
+            });
+
+            this.filters = newFilters;
+            this.currentPage = 1; // 重置分页
+        }
     },
     computed: {
-        tableHeight(){
-            return window.screen.height - 400
+        tableHeight() {
+            return window.screen.height - 400;
+        },
+        // 过滤后的学生列表（用于搜索和筛选）
+        filteredStudents() {
+            console.log("Recalculating filteredStudents..."); // 调试用
+
+            let filtered = this.students;
+            
+            // 应用搜索条件
+            if (this.searchQuery) {
+                const query = this.searchQuery.toLowerCase();
+                filtered = filtered.filter(student => {
+                    return (
+                        String(student.id).includes(query) ||
+                        (student.name && student.name.toLowerCase().includes(query))
+                    );
+                });
+            }
+            
+            // 应用筛选条件
+            if (this.filters.gender !== null) {
+                filtered = filtered.filter(student => student.gender === this.filters.gender);
+            }
+            if (this.filters.has_answered_questionnaire !== null) {
+                filtered = filtered.filter(student => 
+                    student.has_answered_questionnaire === this.filters.has_answered_questionnaire
+                );
+            }
+            if (this.filters.team_id !== null) {
+                if (this.filters.team_id === undefined) {
+                    filtered = filtered.filter(student => student.team == null);
+                } else {
+                    filtered = filtered.filter(student => student.team != null);
+                }
+            }
+            console.info(filtered, this.filters)
+            
+            return filtered;
+        },
+        // 分页后的学生列表
+        paginatedStudents() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            const result = this.filteredStudents.slice(start, end);
+            return result;
         }
+    },
+    async asyncData({params, $axios}) {
+        const data = await $axios.$get('/student/list');
+        return {
+            originalStudents: data.data.students,
+            students: data.data.students
+        };
     }
 }
 </script>
@@ -171,5 +301,14 @@ export default {
 .pagination {
     margin: 20px auto;
     text-align: center;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
 }
 </style>

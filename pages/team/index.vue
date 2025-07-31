@@ -4,14 +4,23 @@
         <el-row type="flex" align="center" justify="center" style="flex-wrap: wrap; flex-direction: row">
             <el-col :span="20">
                 <div class="default-container">
+                    <el-row class="search-bar" style="margin-bottom: 20px">
+                        <el-col :span="8">
+                            <el-input v-model="searchQuery" placeholder="输入队伍ID或学生姓名搜索" clearable
+                                @clear="handleSearchClear" @keyup.enter.native="handleSearch">
+                                <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
+                            </el-input>
+                        </el-col>
+                    </el-row>
+
                     <el-row type="flex" align="center" justify="center">
                         <el-col :span="24">
-                            <el-table :data="teams" >
+                            <el-table :data="paginatedTeams" @filter-change="handleFilterChange" style="width: 100%">
                                 <el-table-column label="ID" prop="id">
                                 </el-table-column>
                                 <el-table-column prop="gender" label="性别"
-                                                 :filters="[{text: '男', value: 1}, {text: '女', value: 2}]"
-                                                 :filter-method="gender_filter_handler">
+                                    :filters="[{ text: '男', value: 1 }, { text: '女', value: 2 }]"
+                                    :filter-method="gender_filter_handler" column-key="gender">
                                     <template slot-scope="scope">
                                         <el-tag v-if="scope.row.gender === 1" size="medium">男</el-tag>
                                         <el-tag v-if="scope.row.gender === 2" size="medium" type="danger">女
@@ -19,21 +28,21 @@
                                     </template>
                                 </el-table-column>
                                 <el-table-column :label="'学生 ' + index" prop="students"
-                                                 v-for="index in team_max_student_count" :key="index">
+                                    v-for="index in team_max_student_count" :key="index">
                                     <template slot-scope="scope">
-                                        <el-dropdown v-if="scope.row.students[index -1]" trigger="click">
+                                        <el-dropdown v-if="scope.row.students[index - 1]" trigger="click">
                                             <span class="el-dropdown-link student-list">
                                                 {{ scope.row.students[index - 1].name }}
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
                                                 <nuxt-link
-                                                    :to="'/student/' + scope.row.students[index -1].id + '/edit'">
+                                                    :to="'/student/' + scope.row.students[index - 1].id + '/edit'">
                                                     <el-dropdown-item icon="el-icon-edit">
                                                         编辑
                                                     </el-dropdown-item>
                                                 </nuxt-link>
                                                 <nuxt-link
-                                                    :to="'/student/' + scope.row.students[index -1].id + '/questionnaire'">
+                                                    :to="'/student/' + scope.row.students[index - 1].id + '/questionnaire'">
                                                     <el-dropdown-item icon="el-icon-document">
                                                         问卷
                                                     </el-dropdown-item>
@@ -45,17 +54,22 @@
                                 <el-table-column label="操作" fixed="right" width="240">
                                     <template slot-scope="scope">
                                         <el-button v-if="scope.row.students.length < team_max_student_count"
-                                                   type="warning" @click="show_add_student_plane(scope.row)"
-                                                   size="mini">添加学生
+                                            type="warning" @click="show_add_student_plane(scope.row)" size="mini">添加学生
                                         </el-button>
                                         <el-button v-else type="warning" size="mini" @click="show_add_student_plane"
-                                                   disabled>添加学生
+                                            disabled>添加学生
                                         </el-button>
                                         <el-button type="danger" @click="delete_team(scope.row.id)" size="mini">删除
                                         </el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
+
+                            <el-pagination style="margin-top: 20px" @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange" :current-page="currentPage"
+                                :page-sizes="[10, 20, 50, 100]" :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next, jumper" :total="filteredTeams.length">
+                            </el-pagination>
                         </el-col>
                     </el-row>
 
@@ -83,7 +97,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="Description" label-width="240px">
-                    <el-input v-model="new_team_data.description" placeholder="Created by Admin"/>
+                    <el-input v-model="new_team_data.description" placeholder="Created by Admin" />
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -92,21 +106,14 @@
             </div>
         </el-dialog>
 
-        <el-dialog :title="'请选择你想要添加到这个队伍的学生 (ID: #' + add_student.team_id + ' )' "
-                   :visible.sync="show_add_student" width="650px">
+        <el-dialog :title="'请选择你想要添加到这个队伍的学生 (ID: #' + add_student.team_id + ' )'" :visible.sync="show_add_student"
+            width="650px">
             你最多可以选择 {{ add_student.limit }} 名学生
             <el-form>
-                <el-select v-model="add_student.selected_students" filterable
-                           placeholder="请选择至少一名学生"
-                           :multiple-limit="add_student.limit"
-                           multiple
-                           style="width: 300px;margin-top: 20px">
-                    <el-option
-                        v-for="student in add_student.available_students"
-                        :key="student.id"
-                        :label="student.name"
-                        :value="student.id"
-                    >
+                <el-select v-model="add_student.selected_students" filterable placeholder="请选择至少一名学生"
+                    :multiple-limit="add_student.limit" multiple style="width: 300px;margin-top: 20px">
+                    <el-option v-for="student in add_student.available_students" :key="student.id" :label="student.name"
+                        :value="student.id">
                         <span style="float: left">{{ student.name }}</span>
                         <span style="float: right; color: #8492a6; font-size: 13px">{{ student.id }}</span>
                     </el-option>
@@ -124,12 +131,14 @@
 
 <script>
 import FileSaver from 'file-saver'
+import { computed } from 'vue';
 let XLSX = require("xlsx");
 export default {
     name: "index",
     data() {
         return {
             teams: [],
+            originalTeams: [],
             team_max_student_count: 4,
             show_create_team_plane: false,
             new_team_data: {
@@ -142,7 +151,46 @@ export default {
                 available_students: [],
                 selected_students: [],
                 limit: 1
+            },
+            currentPage: 1,
+            pageSize: 10,
+            searchQuery: '',
+            activeFilters: {
+                gender: null
             }
+        }
+    },
+    computed: {
+        filteredTeams() {
+            let filtered = this.originalTeams;
+
+            // 应用搜索条件
+            if (this.searchQuery) {
+                const query = this.searchQuery.toLowerCase();
+                filtered = filtered.filter(team => {
+                    // 搜索队伍ID或学生姓名
+                    return (
+                        String(team.id).includes(query) ||
+                        team.students.some(student =>
+                            student.name && student.name.toLowerCase().includes(query)
+                        )
+                    );
+                });
+            }
+
+            console.info(this.activeFilters)
+
+            // 应用筛选条件
+            if (this.activeFilters.gender !== null && this.activeFilters.gender !== undefined) {
+                filtered = filtered.filter(team => team.gender === this.activeFilters.gender);
+            }
+
+            return filtered;
+        },
+        paginatedTeams() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.filteredTeams.slice(start, end);
         }
     },
     methods: {
@@ -224,15 +272,15 @@ export default {
             let workbook = XLSX.utils.book_new()
             XLSX.utils.book_append_sheet(workbook, worksheet)
             let table_write = XLSX.write(workbook, {
-                    bookType: "xlsx",
-                    bookSST: true,
-                    type: "array"
-                }
+                bookType: "xlsx",
+                bookSST: true,
+                type: "array"
+            }
             )
 
             try {
                 FileSaver.saveAs(
-                    new Blob([table_write], {type: "application/octet-stream"}),
+                    new Blob([table_write], { type: "application/octet-stream" }),
                     "队伍名单.xlsx"
                 );
             } catch (e) {
@@ -274,9 +322,9 @@ export default {
             }).then(data => {
                 console.info(data.code)
                 if (data.code === 200) {
-                    let team = _.find(this.teams, {id: this.add_student.team_id})
+                    let team = _.find(this.teams, { id: this.add_student.team_id })
                     for (let student_id of this.add_student.selected_students) {
-                        let student = _.find(this.add_student.available_students, {id: student_id})
+                        let student = _.find(this.add_student.available_students, { id: student_id })
                         team.students.push({
                             id: student.id,
                             name: student.name
@@ -288,10 +336,35 @@ export default {
             }).catch(() => {
                 return
             }, 5000)
-        })
+        }),
+
+        handleFilterChange(filters) {
+            // 处理筛选变化
+            this.activeFilters = {
+                gender: filters.gender ? filters.gender[0] : null
+            };
+            this.currentPage = 1; // 重置到第一页
+        },
+        handleSearch() {
+            this.currentPage = 1; // 搜索时回到第一页
+        },
+
+        handleSearchClear() {
+            this.searchQuery = '';
+            this.currentPage = 1;
+        },
+
+        handleSizeChange(val) {
+            this.pageSize = val;
+            this.currentPage = 1;
+        },
+
+        handleCurrentChange(val) {
+            this.currentPage = val;
+        },
 
     },
-    async asyncData({$axios}) {
+    async asyncData({ $axios }) {
         let teams = await $axios.$get('/team/list').then(data => {
             if (data.code === 200) {
                 return data.data.teams
@@ -306,6 +379,7 @@ export default {
 
         return {
             teams,
+            originalTeams: [...teams],
             team_max_student_count
         }
     }
