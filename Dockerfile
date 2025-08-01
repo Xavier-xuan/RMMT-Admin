@@ -14,8 +14,8 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # 设置环境变量 如果使用k8s部署，请注释掉这行
-# ENV NODE_ENV=production
-# ENV NUXT_API_URL=https://rmmt-api.default.svc.cluster.local
+ENV NODE_ENV=production
+ENV NUXT_API_URL=https://rmmt-api.rmmt.svc.cluster.local
 
 # 构建静态文件
 RUN yarn generate
