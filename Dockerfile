@@ -13,9 +13,8 @@ RUN yarn install --frozen-lockfile
 # 复制源代码
 COPY . .
 
-# 设置环境变量
+# 设置环境变量 如果使用k8s部署，请注释掉这行
 ENV NODE_ENV=production
-ENV NUXT_API_URL=https://rmmt-api.default.svc.cluster.local
 
 # 构建静态文件
 RUN yarn generate
@@ -28,6 +27,10 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # 复制自定义nginx配置
 COPY nginx.conf /etc/nginx/nginx.conf
+
+# 创建必要的临时目录并设置权限
+RUN mkdir -p /tmp/nginx_client_temp /tmp/nginx_proxy_temp /tmp/nginx_fastcgi_temp /tmp/nginx_uwsgi_temp /tmp/nginx_scgi_temp && \
+    chmod 755 /tmp/nginx_*_temp
 
 # 暴露80端口
 EXPOSE 80
