@@ -14,6 +14,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # 设置环境变量 如果使用k8s部署，请注释掉这行
+ENV NUXT_API_URL=http://127.0.0.1:5000
 ENV NODE_ENV=production
 
 # 构建静态文件

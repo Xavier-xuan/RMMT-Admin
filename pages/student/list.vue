@@ -43,6 +43,14 @@
                             </template>
                         </el-table-column>
 
+                        <el-table-column prop="category" label="专业/培养层次"
+                                         :filters="category_filters"
+                                         :filter-method="category_filter_handler">
+                            <template slot-scope="scope">
+                                <el-tag size="medium">{{ scope.row.category }}</el-tag>
+                            </template>
+                        </el-table-column>
+
                         <el-table-column prop="has_answered_questionnaire" label="已回答问卷"
                                          :filters="[{text: '是', value: true}, {text: '否', value: false}]"
                                          :filter-method="questionnaire_filter_handler">
@@ -126,13 +134,18 @@ export default {
             filters: { // 新增：存储当前的筛选条件
                 gender: null,
                 has_answered_questionnaire: null,
-                team_id: null
+                team_id: null,
+                category: null
             }
         }
     },
+
     methods: {
         gender_filter_handler(value, row, column) {
             return row.gender === value
+        },
+        category_filter_handler(value, row, column) {
+            return row.category === value
         },
         questionnaire_filter_handler(value, row, column) {
             return row.has_answered_questionnaire === value
@@ -205,14 +218,15 @@ export default {
             const newFilters = {
                 gender: null,
                 has_answered_questionnaire: null,
-                team_id: null
+                team_id: null,
+                category: null
             };
 
             // 遍历所有列，动态匹配筛选值
             this.$refs.elTable.columns.forEach(column => {
                 const columnKey = column.id; // 例如 "el-table_1_column_4"
                 if (filters[columnKey]) {
-                    const filterValue = filters[columnKey][0]; // 取数组第一个值
+                    const filterValue = filters[columnKey]; // 取数组第一个值
                     switch (column.property) { // 根据列的 prop 分配筛选值
                         case "gender":
                             newFilters.gender = filterValue;
@@ -222,6 +236,9 @@ export default {
                             break;
                         case "team_id":
                             newFilters.team_id = filterValue;
+                            break;
+                        case "category":
+                            newFilters.category = filterValue;
                             break;
                     }
                 }
@@ -235,11 +252,20 @@ export default {
         tableHeight() {
             return window.screen.height - 400;
         },
+        // 动态计算专业/培养层次过滤器
+        category_filters() {
+            // 从原始数据中提取所有唯一的category值
+            const categories = [...new Set(this.originalStudents.map(student => student.category))];
+            return categories.map(category => ({
+                text: category,
+                value: category
+            }));
+        },
         // 过滤后的学生列表（用于搜索和筛选）
         filteredStudents() {
             console.log("Recalculating filteredStudents..."); // 调试用
 
-            let filtered = this.students;
+            let filtered = this.originalStudents;
             
             // 应用搜索条件
             if (this.searchQuery) {
@@ -254,7 +280,7 @@ export default {
             
             // 应用筛选条件
             if (this.filters.gender !== null) {
-                filtered = filtered.filter(student => student.gender === this.filters.gender);
+                filtered = filtered.filter(student => this.filters.gender.includes(student.gender));
             }
             if (this.filters.has_answered_questionnaire !== null) {
                 filtered = filtered.filter(student => 
@@ -268,8 +294,11 @@ export default {
                     filtered = filtered.filter(student => student.team != null);
                 }
             }
-            console.info(filtered, this.filters)
-            
+            if (this.filters.category !== null) {
+                filtered = filtered.filter(student => this.filters.category.includes(student.category));
+            }
+            // console.info(filtered, this.filters)
+            this.students = filtered
             return filtered;
         },
         // 分页后的学生列表

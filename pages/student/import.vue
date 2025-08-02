@@ -9,22 +9,23 @@
                         <el-tag size="mini">ID</el-tag>
                         <el-tag size="mini">姓名</el-tag>
                         <el-tag size="mini">性别（1 代表男性，2 代表女性）</el-tag>
+                        <el-tag size="mini">专业/培养层次（请根据实际情况设置）</el-tag>
                         <el-tag size="mini">密码（最少8位字符）</el-tag>
                         <br/>
                         如果学生的名字中间包含空格，请用
                         <el-tag size="mini">#</el-tag>
                         替换空格，否则将导入失败
                         <br/>
-                        换句话说，一行中仅且只能出现三个空格，比如： <br/>
-                        <code>1111423 卢#光之使徒#笛 1 1230909123</code><br/>
+                        换句话说，一行中仅且只能出现四个空格，比如： <br/>
+                        <code>1111423 卢#光之使徒#笛 1 1 1230909123</code><br/>
                         注意，ID 在系统中应该具有唯一性且必须为正整数，长度不超过13位，否则也会导入失败
                         <br/>
                         系统将分批导入数据，每次10条
                     </div>
                     <el-form>
                         <el-input type="textarea" :autosize="{ minRows: 10}" v-model="accounts_text"
-                                  placeholder="1111423 卢#光之使徒#笛 1 1230909123
-1111769 Alex#Jack 1 1230909123">
+                                  placeholder="1111423 卢#光之使徒#笛 1 1 1230909123
+1111769 Alex#Jack 1 1 1230909123">
                         </el-input>
                     </el-form>
                     <el-button class="import-btn" type="primary" @click="import_accounts" :loading="isImporting">
@@ -88,7 +89,7 @@ export default {
                 // 验证ID格式
                 const invalidIds = batch.filter(account => {
                     const parts = account.split(/\s+/);
-                    return parts.length < 4 || !this.isValidId(parts[0]);
+                    return parts.length < 5 || !this.isValidId(parts[0]);
                 });
                 
                 // 将无效ID添加到失败列表
@@ -97,7 +98,7 @@ export default {
                 // 有效的账户
                 const validAccounts = batch.filter(account => {
                     const parts = account.split(/\s+/);
-                    return parts.length >= 4 && this.isValidId(parts[0]);
+                    return parts.length >= 5 && this.isValidId(parts[0]);
                 });
                 
                 if (validAccounts.length > 0) {

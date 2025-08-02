@@ -27,6 +27,13 @@
                                         </el-tag>
                                     </template>
                                 </el-table-column>
+                                <el-table-column prop="category" label="专业/培养层次"
+                                    :filters="category_filters"
+                                    :filter-method="category_filter_handler" column-key="category">
+                                    <template slot-scope="scope">
+                                        <el-tag size="medium">{{ scope.row.category }}</el-tag>
+                                    </template>
+                                </el-table-column>
                                 <el-table-column :label="'学生 ' + index" prop="students"
                                     v-for="index in team_max_student_count" :key="index">
                                     <template slot-scope="scope">
@@ -156,7 +163,8 @@ export default {
             pageSize: 10,
             searchQuery: '',
             activeFilters: {
-                gender: null
+                gender: null,
+                category: null
             }
         }
     },
@@ -182,7 +190,11 @@ export default {
 
             // 应用筛选条件
             if (this.activeFilters.gender !== null && this.activeFilters.gender !== undefined) {
-                filtered = filtered.filter(team => team.gender === this.activeFilters.gender);
+                filtered = filtered.filter(team => this.activeFilters.gender.includes(team.gender));
+            }
+
+            if (this.activeFilters.category !== null && this.activeFilters.category !== undefined) {
+                filtered = filtered.filter(team => this.activeFilters.category.includes(team.category));
             }
 
             return filtered;
@@ -191,11 +203,21 @@ export default {
             const start = (this.currentPage - 1) * this.pageSize;
             const end = start + this.pageSize;
             return this.filteredTeams.slice(start, end);
+        },
+        category_filters() {
+            const categories = [...new Set(this.originalTeams.map(team => team.category))];
+            return categories.map(category => ({
+                text: category,
+                value: category
+            }));
         }
     },
     methods: {
         gender_filter_handler(value, row, column) {
             return row.gender === value
+        },
+        category_filter_handler(value, row, column) {
+            return row.category === value
         },
         delete_team(team_id) {
             this.$confirm("你确定要删除编号为 #" + team_id + " 的队伍吗？", "确认操作", {
@@ -251,6 +273,7 @@ export default {
                 let row_data = [
                     team.id,
                     team.gender === 1 ? '男' : "女",
+                    team.category,
                     team.description
                 ]
 
@@ -292,6 +315,7 @@ export default {
         async show_add_student_plane(team_row) {
             let team_id = team_row.id
             let gender = team_row.gender
+            let category = team_row.category
             let students = await this.$axios.$get("/student/list").then(data => {
                 if (data.code === 200) {
                     return data.data.students
@@ -308,7 +332,7 @@ export default {
             this.add_student.team_id = team_id
             this.add_student.limit = this.team_max_student_count - team_row.students.length
             this.add_student.available_students = _.filter(students, function (item) {
-                return item.gender === gender && item.team == null
+                return item.gender === gender && item.category === category && item.team == null
             })
             this.add_student.selected_students = []
 
@@ -341,7 +365,8 @@ export default {
         handleFilterChange(filters) {
             // 处理筛选变化
             this.activeFilters = {
-                gender: filters.gender ? filters.gender[0] : null
+                gender: filters.gender ? filters.gender : null,
+                category: filters.category ? filters.category : null
             };
             this.currentPage = 1; // 重置到第一页
         },

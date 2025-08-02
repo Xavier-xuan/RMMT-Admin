@@ -83,6 +83,6 @@ export default {
         middleware: ['auth']
     },
     axios: {
-        baseURL: "/api/admin"
+        baseURL: process.env.NUXT_API_URL + "/api/admin"
     }
 }
