@@ -9,7 +9,7 @@
                         <el-tag size="mini">ID</el-tag>
                         <el-tag size="mini">姓名</el-tag>
                         <el-tag size="mini">性别（1 代表男性，2 代表女性）</el-tag>
-                        <el-tag size="mini">专业/培养层次（请根据实际情况设置）</el-tag>
+                        <el-tag size="mini">分组</el-tag>
                         <el-tag size="mini">密码（最少8位字符）</el-tag>
                         <br/>
                         如果学生的名字中间包含空格，请用
