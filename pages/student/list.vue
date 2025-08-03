@@ -43,7 +43,7 @@
                             </template>
                         </el-table-column>
 
-                        <el-table-column prop="category" label="专业/培养层次"
+                        <el-table-column prop="category" label="分组"
                                          :filters="category_filters"
                                          :filter-method="category_filter_handler">
                             <template slot-scope="scope">
