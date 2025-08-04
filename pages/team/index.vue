@@ -102,6 +102,12 @@
                         <el-option label="女" :value="2"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="Category" label-width="240px">
+                    <el-select v-model="new_team_data.category" placeholder="请选择分组">
+                        <el-option v-for="category in category_filters" :key="category.value" :label="category.text"
+                            :value="category.value"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="Description" label-width="240px">
                     <el-input v-model="new_team_data.description" placeholder="Created by Admin" />
                 </el-form-item>
@@ -149,6 +155,7 @@ export default {
             show_create_team_plane: false,
             new_team_data: {
                 gender: 1,
+                category: null,
                 description: "Created by admin."
             },
             show_add_student: false,
@@ -245,11 +252,13 @@ export default {
                         description: this.new_team_data.description,
                         gender: this.new_team_data.gender,
                         students: [],
-                        id: data.data.team_id
+                        id: data.data.team_id,
+                        category: this.new_team_data.category
                     })
                     this.$message.success("新队伍已创建 (ID: #" + data.data.team_id + " )")
                     this.new_team_data = {
                         gender: 1,
+                        category: null,
                         description: "Created by admin."
                     }
                     this.show_create_team_plane = false
