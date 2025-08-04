@@ -17,15 +17,15 @@
                         替换空格，否则将导入失败
                         <br/>
                         换句话说，一行中仅且只能出现四个空格，比如： <br/>
-                        <code>1111423 卢#光之使徒#笛 1 1 1230909123</code><br/>
+                        <code>1111423 卢#光之使徒#笛 1 本科 1230909123</code><br/>
                         注意，ID 在系统中应该具有唯一性且必须为正整数，长度不超过13位，否则也会导入失败
                         <br/>
                         系统将分批导入数据，每次10条
                     </div>
                     <el-form>
                         <el-input type="textarea" :autosize="{ minRows: 10}" v-model="accounts_text"
-                                  placeholder="1111423 卢#光之使徒#笛 1 1 1230909123
-1111769 Alex#Jack 1 1 1230909123">
+                                  placeholder="1111423 卢#光之使徒#笛 1 本科 1230909123
+1111769 Alex#Jack 1 本科 1230909123">
                         </el-input>
                     </el-form>
                     <el-button class="import-btn" type="primary" @click="import_accounts" :loading="isImporting">

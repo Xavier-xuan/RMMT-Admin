@@ -34,8 +34,7 @@
                                         <el-tag size="medium">{{ scope.row.category }}</el-tag>
                                     </template>
                                 </el-table-column>
-                                <el-table-column :label="'学生 ' + index" prop="students"
-                                    v-for="index in team_max_student_count" :key="index">
+                                <el-table-column :label="'学生 ' + index" v-for="index in team_max_student_count" :key="index">
                                     <template slot-scope="scope">
                                         <el-dropdown v-if="scope.row.students[index - 1]" trigger="click">
                                             <span class="el-dropdown-link student-list">
@@ -261,7 +260,7 @@ export default {
 
             // 构造数据 Start
             let table_headers = [
-                '队伍 ID', '性别', '备注'
+                '队伍 ID', '性别', '专业/培养层次', '备注'
             ]
 
             for (let i = 1; i <= this.team_max_student_count; i++) {
@@ -398,14 +397,18 @@ export default {
 
         let team_max_student_count = await $axios.$get('/system_setting/list').then(data => {
             if (data.code === 200) {
-                return data.data.team_max_student_count || 4
+                const setting = data.data.find(item => item.key === 'team_max_student_count')
+                return setting ? parseInt(setting.value) || 4 : 4
             }
+            return 4
+        }).catch(() => {
+            return 4
         })
 
         return {
             teams,
             originalTeams: [...teams],
-            team_max_student_count
+            team_max_student_count: team_max_student_count
         }
     }
 }

@@ -17,6 +17,10 @@
                             <el-radio v-model="student.gender" disabled :label="2">女</el-radio>
                         </el-form-item>
 
+                        <el-form-item prop="category" label="专业/培养层次">
+                            <el-input v-model="student.category"></el-input>
+                        </el-form-item>
+
                         <el-form-item prop="password" label="密码">
                             <el-input v-model="student.password"
                                       placeholder="如果不想更改密码，请留空"></el-input>
@@ -59,7 +63,8 @@ export default {
                 'gender': 0,
                 'password': null,
                 'contact': '',
-                'team_id': ''
+                'team_id': '',
+                'category': ''
             },
             team_options: []
         }
